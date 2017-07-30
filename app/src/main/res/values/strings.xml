@@ -8,9 +8,21 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to Login -->
+    <string name="insert_name">Ingrese Nombre</string>
+    <string name="insert_firtlastname">Ingrese Apellido Paterno</string>
+    <string name="insert_seconlastname">Ingrese Apellido Materno</string>
+    <string name="insert_gear">Ingrese Edad</string>
+    <string name="insert_user">Ingrese Usuario</string>
+    <string name="insert_password">Ingrese Clave</string>
+    <string name="insert_password_confirm">Ingrese Clave de Confirmacion</string>
+    <string name="insert_email">Ingrese Correo</string>
+
     <string name="prompt_email">Ingrese Usuario</string>
     <string name="prompt_password">Ingrese Clave</string>
+    <string name="action_signin">Ya tengo Cuenta</string>
     <string name="action_sign_in">Entrar</string>
+    <string name="action_signup">Crear</string>
+    <string name="action_sign_up">Crear Cuenta</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
