@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiAdapter {
 
     private static ApiService API_SERVICE;
+
     public static ApiService getApiService(){
         HttpLoggingInterceptor logging =  new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

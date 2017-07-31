@@ -27,6 +27,12 @@ public interface ApiService {
     @Headers(ConstantsHelp.ACCESS_TOKEN)
     Call<LoginResponse> processLogin(@Field("edt_usuario") String usuario, @Field("edt_clave") String clave);
 
+    @FormUrlEncoded
+    @POST("logout")
+    @Headers(ConstantsHelp.ACCESS_TOKEN)
+    Call<LoginResponse> processLogout(@Field("edt_id") String id);
+
+
     /*
     * USUARIOS
     * */

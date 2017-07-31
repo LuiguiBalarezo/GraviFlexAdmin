@@ -11,16 +11,25 @@ import com.afollestad.materialdialogs.MaterialDialog;
 public class MaterialDialogHelp {
 
     private MaterialDialog materialDialog = null;
+    private Context context = null;
 
-    public MaterialDialogHelp(Context context, MaterialDialog materialDialog) {
-//        materialDialog = new MaterialDialog.Builder(context)
-//                .title(R.string.progress_dialog)
-//                .content(R.string.please_wait)
-//                .progress(true, 0)
-//                .progressIndeterminateStyle(horizontal)
-//                .show();
-
+    public MaterialDialogHelp(Context ctx) {
+        context = ctx;
     }
 
-
+    public void showOrDismissIndeterninate(String texttitle, String textcontent){
+        if(materialDialog == null){
+            materialDialog = new MaterialDialog.Builder(context)
+                    .autoDismiss(false)
+                    .cancelable(false)
+                    .title(texttitle)
+                    .content(textcontent)
+                    .progress(true, 0)
+                    .progressIndeterminateStyle(true).build();
+            materialDialog.show();
+        }else{
+            materialDialog.dismiss();
+            materialDialog = null;
+        }
+    }
 }
