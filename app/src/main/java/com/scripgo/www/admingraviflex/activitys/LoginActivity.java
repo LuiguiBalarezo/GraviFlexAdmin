@@ -96,12 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                     if (loginResponse.error) {
                         Toast.makeText(LoginActivity.this, " " + loginResponse.message + " " + loginResponse.usuario, Toast.LENGTH_SHORT).show();
                     } else {
-
                         Toast.makeText(LoginActivity.this, " " + loginResponse.usuario.id, Toast.LENGTH_SHORT).show();
-
                         final Usuario usuario = loginResponse.usuario;
                         guardaUsuario(usuario);
-
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "ERROR EN FORMATO DE RESPUESTA", Toast.LENGTH_SHORT).show();
@@ -160,7 +157,6 @@ public class LoginActivity extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
         edt_usuario = (EditText) findViewById(R.id.edt_usuario);
         edt_clave = (EditText) findViewById(R.id.edt_clave);
         btn_entrar = (Button) findViewById(R.id.btn_entrar);

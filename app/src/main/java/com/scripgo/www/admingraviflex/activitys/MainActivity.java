@@ -2,10 +2,13 @@ package com.scripgo.www.admingraviflex.activitys;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +21,10 @@ import android.widget.Toast;
 
 import com.scripgo.www.admingraviflex.R;
 import com.scripgo.www.admingraviflex.apidapter.ApiAdapter;
+import com.scripgo.www.admingraviflex.fragments.EgresosFragment;
+import com.scripgo.www.admingraviflex.fragments.IngresosFragment;
+import com.scripgo.www.admingraviflex.fragments.ObrasFragment;
+import com.scripgo.www.admingraviflex.fragments.ValoracionesFragment;
 import com.scripgo.www.admingraviflex.help.MaterialDialogHelp;
 import com.scripgo.www.admingraviflex.models.Usuario;
 import com.scripgo.www.admingraviflex.response.LoginResponse;
@@ -30,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements ObrasFragment.OnFragmentInteractionListener, EgresosFragment.OnFragmentInteractionListener, IngresosFragment.OnFragmentInteractionListener, ValoracionesFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
 
     // VAR CONTEXT
     private Context context = null;
@@ -49,6 +56,11 @@ public class MainActivity extends AppCompatActivity
     private MaterialDialogHelp materialDialogHelp  = null;
 
 
+    // TRANSACTION
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,11 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (getFragmentManager().findFragmentById(R.id.container_framelayout) == null) {
+            selectFragment(R.id.nav_obras);
+        }
+
     }
 
     @Override
@@ -114,27 +131,51 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        selectFragment(id);
+        return true;
+    }
 
+    private void selectFragment(int id){
+        Fragment fragment = null;
+        Class fragmentClass;
         switch (id){
             case R.id.nav_obras:
                 Toast.makeText(this, "nav_obras", Toast.LENGTH_SHORT).show();
+//                fragmentClass = ObrasFragment.class;
+                fragment = (Fragment) ObrasFragment.newInstance("Luigui","Balarezo");
                 break;
             case R.id.nav_egresos:
                 Toast.makeText(this, "nav_egresos", Toast.LENGTH_SHORT).show();
+//                fragmentClass = EgresosFragment.class;
+                fragment = (Fragment) EgresosFragment.newInstance("Luigui","Balarezo");
                 break;
             case R.id.nav_ingresos:
                 Toast.makeText(this, "nav_ingresos", Toast.LENGTH_SHORT).show();
+//                fragmentClass = IngresosFragment.class;
+                fragment = (Fragment) IngresosFragment.newInstance("Luigui","Balarezo");
                 break;
             case R.id.nav_valoraciones:
                 Toast.makeText(this, "nav_valoraciones", Toast.LENGTH_SHORT).show();
+//                fragmentClass = ValoracionesFragment.class;
+                fragment = (Fragment) ValoracionesFragment.newInstance("Luigui","Balarezo");
                 break;
             case R.id.nav_salir:
                 Toast.makeText(this, "Salir", Toast.LENGTH_SHORT).show();
                 processLogout();
                 break;
         }
+
+        try {
+            //fragment = (Fragment) fragmentClass.newInstance();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container_framelayout, fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void eliminarUsuario(final Realm realm){
@@ -172,21 +213,26 @@ public class MainActivity extends AppCompatActivity
         login.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse.error) {
+
                         Toast.makeText(context, " " + loginResponse.message + " " + loginResponse.usuario, Toast.LENGTH_SHORT).show();
+                        materialDialogHelp.showOrDismissIndeterninate(null,null);
                     }else{
                         Toast.makeText(context, "API CERRO SESION", Toast.LENGTH_SHORT).show();
                         eliminarUsuario(realm);
                     }
                 }else{
                     Toast.makeText(context, "ERROR EN FORMATO DE RESPUESTA", Toast.LENGTH_SHORT).show();
+                    materialDialogHelp.showOrDismissIndeterninate(null,null);
                 }
             }
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
+                materialDialogHelp.showOrDismissIndeterninate(null,null);
             }
         });
     }
