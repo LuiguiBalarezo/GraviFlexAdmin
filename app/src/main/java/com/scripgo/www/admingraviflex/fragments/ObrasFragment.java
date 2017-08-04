@@ -4,11 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.scripgo.www.admingraviflex.R;
+import com.scripgo.www.admingraviflex.activitys.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +31,7 @@ public class ObrasFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private  View view= null;
+    private View view = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,13 +64,16 @@ public class ObrasFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        onButtonPressed(null);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_obras, container, false);
+        view = inflater.inflate(R.layout.fragment_obras, container, false);
         return view;
     }
 
@@ -77,6 +83,7 @@ public class ObrasFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -95,6 +102,10 @@ public class ObrasFragment extends Fragment {
         mListener = null;
     }
 
+    public static void actionFloatButtonObras() {
+        Log.d("TAG", "HOLA");
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -108,5 +119,43 @@ public class ObrasFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()) {
+            Toast.makeText(getActivity(), "VISIBLE OBRAS", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).fab.show();
+            ((MainActivity) getActivity()).actionFloatButton("ObrasFragment");
+        } else {
+            Toast.makeText(getActivity(), "INVISIBLE OBRAS", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(getActivity(), "onStart OBRAS", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Toast.makeText(getActivity(), "STOP OBRAS", Toast.LENGTH_SHORT).show();
+        ((MainActivity) getActivity()).fab.hide();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            ((MainActivity) getActivity()).fab.show();
+        }
+    }
+
 }

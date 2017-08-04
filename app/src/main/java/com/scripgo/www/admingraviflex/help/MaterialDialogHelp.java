@@ -32,4 +32,6 @@ public class MaterialDialogHelp {
             materialDialog = null;
         }
     }
+
+
 }

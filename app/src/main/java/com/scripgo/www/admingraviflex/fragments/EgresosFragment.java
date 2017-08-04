@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.scripgo.www.admingraviflex.R;
+import com.scripgo.www.admingraviflex.activitys.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -106,4 +108,35 @@ public class EgresosFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()) {
+            Toast.makeText(getActivity(), "VISIBLE EGRESOS", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).fab.show();
+            ((MainActivity) getActivity()).actionFloatButton("EgresosFragment");
+        } else {
+            Toast.makeText(getActivity(), "INVISIBLE EGRESOS", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Toast.makeText(getActivity(), "STOP egresos", Toast.LENGTH_SHORT).show();
+        ((MainActivity) getActivity()).fab.hide();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            ((MainActivity) getActivity()).fab.show();
+        }
+    }
+
 }

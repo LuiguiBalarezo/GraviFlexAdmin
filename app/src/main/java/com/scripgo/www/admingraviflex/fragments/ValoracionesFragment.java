@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.scripgo.www.admingraviflex.R;
+import com.scripgo.www.admingraviflex.activitys.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,5 +107,35 @@ public class ValoracionesFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()) {
+            Toast.makeText(getActivity(), "VISIBLE VALORACIONES", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).fab.show();
+            ((MainActivity) getActivity()).actionFloatButton("ValoracionesFragment");
+        } else {
+            Toast.makeText(getActivity(), "INVISIBLE Valoraciones", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Toast.makeText(getActivity(), "STOP Valoraciones", Toast.LENGTH_SHORT).show();
+        ((MainActivity) getActivity()).fab.hide();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            ((MainActivity) getActivity()).fab.show();
+        }
     }
 }

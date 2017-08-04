@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.scripgo.www.admingraviflex.R;
 import com.scripgo.www.admingraviflex.apidapter.ApiAdapter;
 import com.scripgo.www.admingraviflex.fragments.EgresosFragment;
@@ -49,18 +49,22 @@ public class MainActivity extends AppCompatActivity
 
     // UI
     private Toolbar toolbar = null;
-    private FloatingActionButton fab = null;
+    public FloatingActionButton fab = null;
     private DrawerLayout drawer = null;
     private ActionBarDrawerToggle toggle = null;
     private NavigationView navigationView = null;
     private MaterialDialogHelp materialDialogHelp  = null;
 
-
+    private MaterialDialog materialdialog_obras = null;
+    private MaterialDialog materialdialog_egresos = null;
+    private MaterialDialog materialdialog_ingresos = null;
+    private MaterialDialog materialdialog_valoraciones = null;
     // TRANSACTION
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +80,40 @@ public class MainActivity extends AppCompatActivity
         //HELPS
         materialDialogHelp = new MaterialDialogHelp(this);
         ////////
+
+        materialdialog_obras = new MaterialDialog.Builder(context).autoDismiss(false)
+                        .title("Ingrese Obras")
+                        .customView(R.layout.dialog_obras, true)
+                        .build();
+
+        materialdialog_egresos = new MaterialDialog.Builder(context).autoDismiss(false)
+                .title("Ingrese Egresos")
+                .customView(R.layout.dialog_egresos, true)
+                .build();
+
+        materialdialog_ingresos = new MaterialDialog.Builder(context).autoDismiss(false)
+                .title("Ingrese Ingresos")
+                .customView(R.layout.dialog_ingresos, true)
+                .build();
+
+        materialdialog_valoraciones = new MaterialDialog.Builder(context).autoDismiss(false)
+                .title("Ingrese Valoraciones")
+                .customView(R.layout.dialog_valoraciones, true)
+                .build();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -110,6 +137,55 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+
+    public void actionFloatButton(String namefragment){
+        switch (namefragment){
+            case "ObrasFragment":
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(context, "HACER ALGO EN OBRAS", Toast.LENGTH_SHORT).show();
+                            materialdialog_obras.show();
+                        }
+                    });
+                break;
+            case  "EgresosFragment":
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "HACER ALGO EN EGRESOS", Toast.LENGTH_SHORT).show();
+                        materialdialog_egresos.show();
+                    }
+                });
+                break;
+            case  "IngresosFragment":
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "HACER ALGO EN EGRESOS", Toast.LENGTH_SHORT).show();
+                        materialdialog_ingresos.show();
+                    }
+                });
+                break;
+            case  "ValoracionesFragment":
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "HACER ALGO EN EGRESOS", Toast.LENGTH_SHORT).show();
+                        materialdialog_valoraciones.show();
+                    }
+                });
+                break;
+        }
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,27 +213,31 @@ public class MainActivity extends AppCompatActivity
 
     private void selectFragment(int id){
         Fragment fragment = null;
-        Class fragmentClass;
+        //Class fragmentClass;
+        Class fragmentClass = null;
         switch (id){
             case R.id.nav_obras:
                 Toast.makeText(this, "nav_obras", Toast.LENGTH_SHORT).show();
-//                fragmentClass = ObrasFragment.class;
-                fragment = (Fragment) ObrasFragment.newInstance("Luigui","Balarezo");
+                fragmentClass = ObrasFragment.class;
+                toolbar.setTitle("Obras");
                 break;
             case R.id.nav_egresos:
                 Toast.makeText(this, "nav_egresos", Toast.LENGTH_SHORT).show();
-//                fragmentClass = EgresosFragment.class;
-                fragment = (Fragment) EgresosFragment.newInstance("Luigui","Balarezo");
+                fragmentClass = EgresosFragment.class;
+                //fragment = (Fragment) EgresosFragment.newInstance("Luigui","Balarezo");
+                toolbar.setTitle("Egresos");
                 break;
             case R.id.nav_ingresos:
                 Toast.makeText(this, "nav_ingresos", Toast.LENGTH_SHORT).show();
-//                fragmentClass = IngresosFragment.class;
-                fragment = (Fragment) IngresosFragment.newInstance("Luigui","Balarezo");
+                fragmentClass = IngresosFragment.class;
+//                fragment = (Fragment) IngresosFragment.newInstance("Luigui","Balarezo");
+                toolbar.setTitle("Ingresos");
                 break;
             case R.id.nav_valoraciones:
                 Toast.makeText(this, "nav_valoraciones", Toast.LENGTH_SHORT).show();
-//                fragmentClass = ValoracionesFragment.class;
-                fragment = (Fragment) ValoracionesFragment.newInstance("Luigui","Balarezo");
+                fragmentClass = ValoracionesFragment.class;
+//                fragment = (Fragment) ValoracionesFragment.newInstance("Luigui","Balarezo");
+                toolbar.setTitle("Valoraciones");
                 break;
             case R.id.nav_salir:
                 Toast.makeText(this, "Salir", Toast.LENGTH_SHORT).show();
@@ -166,16 +246,36 @@ public class MainActivity extends AppCompatActivity
         }
 
         try {
-            //fragment = (Fragment) fragmentClass.newInstance();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.container_framelayout, fragment).commit();
+            fragment = (Fragment) fragmentClass.newInstance();
+            actionFloatButton(fragment);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+         fragmentManager.beginTransaction().replace(R.id.container_framelayout, fragment).commit();
 
+//        Fragment fragment2 = getSupportFragmentManager().findFragmentById(R.id.container_framelayout);
+//        if (fragment != null && fragment.isMenuVisible()) {
+//            if (fragment instanceof ObrasFragment) {
+//                ((FragmentAudioMessage) fragment).initPlay();
+//            } else {
+//                //do something else.
+//            }
+//        }
 
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void actionFloatButton(Fragment f){
+        switch (f.getClass().getSimpleName()){
+            case "ObrasFragment":
+                ObrasFragment.actionFloatButtonObras();
+                break;
+            default:
+                Toast.makeText(context, "" + f.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private void eliminarUsuario(final Realm realm){
